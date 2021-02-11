@@ -5,6 +5,8 @@ on: # rebuild any PRs and main branch changes
     branches:
       - main
       - 'releases/*'
+env:
+  TERRAFORM_WORKING_DIRECTORY: terraform
 
 jobs:
   build: # make sure build/ci work properly
@@ -15,10 +17,26 @@ jobs:
           npm install
       - run: |
           npm run all
+
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13
+          terraform_wrapper: false
+          
+      - name: Terraform Init
+        id: init
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: terraform init
+
       - uses: ./
         with:
-          milliseconds: 1000
+          args: -var-file=./vars/vars.tfvars
+          token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+          

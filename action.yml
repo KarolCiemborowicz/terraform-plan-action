@@ -1,11 +1,28 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'terraform-plan-action'
+description: 'This action does a plan of terraform and then posts the plan and status back to the pull request checks endpoint'
+author: 'edwinf'
 inputs:
-  milliseconds: # change this
+  args: 
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'The string of the terraform plan arguments ''terraform plan -no-color'' will be pre-pended to this argument.'
+  token:
+    required: true
+    description: 'The github token to use to post back to the checks endpoint.'
+  working-directory:
+    required: true
+    description: 'The path to the terraform working directory.  This is the path to your terraform code, not to the terraform binary.'
+  debug:
+    required: false
+    description: 'If set to true, will set the TF_LOG environment variable to DEBUG on the terraform plan process to dump debug output.'
+    default: false
+  continue-on-error:
+    required: false
+    description: 'Whether or not the action should set the failure status if the plan fails.  This will not affect the check being set witht he plan results.'
+    default: false
+  reportTitle:
+    required: false
+    description: 'The name of the terraform plan to use when posting the results to the Pull Request'
+    default: 'Terraform Plan Report'
 runs:
   using: 'node12'
   main: 'dist/index.js'
