@@ -39,6 +39,12 @@ jobs:
           args: -var-file=./vars/vars.tfvars
           token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+
+      - uses: ./
+        with:
+          args: '["-lock=false", "-var-file=./vars/vars.tfvars"]'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
           
   release:
     runs-on: ubuntu-latest
@@ -71,4 +77,4 @@ jobs:
             }
           ]
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}         
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

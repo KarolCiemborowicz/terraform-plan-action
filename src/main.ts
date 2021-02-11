@@ -5,7 +5,7 @@ import { TerraformResults } from './terraform-results';
 
 async function run(): Promise<void> {
   try {
-    const terraformArgs: string = core.getInput('args');
+    const terraformArgs: string[] = parseArgs(core.getInput('args'));
     const githubToken: string = core.getInput('token');
     const reportTitle: string = core.getInput('reportTitle');
     const workingDirectory: string = core.getInput('working-directory');
@@ -43,7 +43,7 @@ async function run(): Promise<void> {
 
     const exitCode = await exec(
       'terraform',
-      ['plan', '-no-color', '-input=false', terraformArgs],
+      ['plan', '-no-color', '-input=false'].concat(terraformArgs),
       options
     );
 
@@ -75,6 +75,15 @@ async function run(): Promise<void> {
 
 function writeBufferToString(data: Buffer[]): string {
   return data.map((buffer) => buffer.toString()).join('');
+}
+
+function parseArgs(args: string): string[] {
+  if (args.startsWith('[')) {
+    const parsedArgs = JSON.parse(`{ "value": ${args} }`);
+    return parsedArgs.value;
+  } else {
+    return [args];
+  }
 }
 
 run();
