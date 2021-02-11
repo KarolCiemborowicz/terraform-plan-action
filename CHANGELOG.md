@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.0.0...v1.1.0) (2021-02-11)
+
+
+### Features
+
+* add support for multiple arguments via an array ([#10](https://github.com/HylandSoftware/terraform-plan-action/issues/10)) ([caa34e9](https://github.com/HylandSoftware/terraform-plan-action/commit/caa34e95a668449ee9703844be17643ebe821563))
+
 # 1.0.0 (2021-02-11)
 
 
