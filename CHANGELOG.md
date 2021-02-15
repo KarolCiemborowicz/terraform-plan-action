@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.0...v1.1.1) (2021-02-15)
+
+
+### Bug Fixes
+
+* fix code owners file from template version ([900bfe6](https://github.com/HylandSoftware/terraform-plan-action/commit/900bfe667a3ae5694104426e22616af4df7eff65))
+* update license to specify Hyland ([1d4f157](https://github.com/HylandSoftware/terraform-plan-action/commit/1d4f157ae71e068b2044f8cd99b39158e51a48ff))
+
 # [1.1.0](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.0.0...v1.1.0) (2021-02-11)
 
 
