@@ -7,7 +7,7 @@ The following arguments are automatically added to `terraform plan -no-color -in
 Example usage
 
 ```
-- uses: ./
+- uses: HylandSoftware/terraform-plan-action@v1.1.1
   with:
     args: -var-file=./vars/vars.tfvars
     token: ${{ secrets.GITHUB_TOKEN }}
