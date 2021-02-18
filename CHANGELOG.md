@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.1...v1.1.2) (2021-02-18)
+
+
+### Bug Fixes
+
+* documentation and argument consistency and tag major version every release ([#16](https://github.com/HylandSoftware/terraform-plan-action/issues/16)) ([ba6542d](https://github.com/HylandSoftware/terraform-plan-action/commit/ba6542d5cf0f617ea5002494e02f63578a4ba8fe))
+
 ## [1.1.1](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.0...v1.1.1) (2021-02-15)
 
 
