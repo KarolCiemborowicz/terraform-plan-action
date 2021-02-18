@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.6...v1.1.7) (2021-02-18)
+
+
+### Bug Fixes
+
+* plan too long for status api ([#18](https://github.com/HylandSoftware/terraform-plan-action/issues/18)) ([1a78e7b](https://github.com/HylandSoftware/terraform-plan-action/commit/1a78e7b361714c4a3cb37c1f14d9c272b743ac3e))
+
 ## [1.1.6](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.5...v1.1.6) (2021-02-18)
 
 
