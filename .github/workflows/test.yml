@@ -17,8 +17,6 @@ jobs:
           npm install
       - run: |
           npm run all
-          # Fail if "npm run build" generated new changes in dist
-          # git update-index --refresh dist/* && git diff-index --quiet HEAD dist
 
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
@@ -49,7 +47,30 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
           report-title: Multiple Argument Run
+  
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13
+          terraform_wrapper: false
           
+      - name: Terraform Init
+        id: init
+        working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+        run: terraform init
+
+      - uses: ./
+        with:
+          args: -var-file=./vars/vars.tfvars
+          token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+          report-title: Single Argument Run Second Job
+
   release:
     runs-on: ubuntu-latest
     needs: [build, test]

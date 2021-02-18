@@ -1,6 +1,6 @@
 name: 'terraform-plan-action'
 description: 'This action does a plan of terraform and then posts the plan and status back to the pull request checks endpoint'
-author: 'edwinf'
+author: 'HylandSoftware'
 inputs:
   args: 
     required: true
@@ -19,7 +19,7 @@ inputs:
     required: false
     description: 'Whether or not the action should set the failure status if the plan fails.  This will not affect the check being set witht he plan results.'
     default: false
-  reportTitle:
+  report-title:
     required: false
     description: 'The name of the terraform plan to use when posting the results to the Pull Request'
     default: 'Terraform Plan Report'
