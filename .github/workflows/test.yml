@@ -87,9 +87,9 @@ jobs:
     - name: Move major version tag
       if: steps.semantic-release.outputs.new_release_published == 'true'
       env:
-        VERION_TAG: v${{steps.semantic.outputs.new_release_major_version}}
+        VERION_TAG: v${{steps.semantic-release.outputs.new_release_major_version}}
       run: |
-        git tag -d v${{ env.VERION_TAG }}
-        git push origin :v${{ env.VERION_TAG }}
-        git tag v${{ env.VERION_TAG }} ${{ env.GITHUB_SHA }}
-        git push origin v${{ env.VERION_TAG }}
+        git tag -d ${{ env.VERION_TAG }}
+        git push origin :${{ env.VERION_TAG }}
+        git tag ${{ env.VERION_TAG }} ${{ env.GITHUB_SHA }}
+        git push origin ${{ env.VERION_TAG }}
