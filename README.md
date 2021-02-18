@@ -14,3 +14,14 @@ Example usage
     working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
 
 ```
+Example 2: 
+** Specify a title for the status report (required if more then one per run) 
+** Specify multiple arguments to the plan as a quoted json array
+```
+      - uses: HylandSoftware/terraform-plan-action@v1.1.1
+        with:
+          args: '["-lock=false", "-var-file=./vars/vars.tfvars"]'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+          report-title: Multiple Argument Run
+```

@@ -7,7 +7,7 @@ async function run(): Promise<void> {
   try {
     const terraformArgs: string[] = parseArgs(core.getInput('args'));
     const githubToken: string = core.getInput('token');
-    const reportTitle: string = core.getInput('reportTitle');
+    const reportTitle: string = core.getInput('report-title');
     const workingDirectory: string = core.getInput('working-directory');
     const debug: boolean =
       (core.getInput('debug', { required: false }) || 'false') === 'true';

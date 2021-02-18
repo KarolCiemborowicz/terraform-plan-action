@@ -17,6 +17,8 @@ jobs:
           npm install
       - run: |
           npm run all
+          # Fail if "npm run build" generated new changes in dist
+          # git update-index --refresh dist/* && git diff-index --quiet HEAD dist
 
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
@@ -39,12 +41,14 @@ jobs:
           args: -var-file=./vars/vars.tfvars
           token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+          report-title: Single Argument Run
 
       - uses: ./
         with:
           args: '["-lock=false", "-var-file=./vars/vars.tfvars"]'
           token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
+          report-title: Multiple Argument Run
           
   release:
     runs-on: ubuntu-latest
@@ -78,3 +82,13 @@ jobs:
           ]
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Move major version tag
+      if: steps.semantic.outputs.new_release_published == 'true'
+      env:
+        VERION_TAG: v${{steps.semantic.outputs.new_release_major_version}}
+      run: |
+        git tag -d v${{ env.VERION_TAG }}
+        git push origin :v${{ env.VERION_TAG }}
+        git tag v${{ env.VERION_TAG }} ${{ env.GITHUB_SHA }}
+        git push origin v${{ env.VERION_TAG }}
