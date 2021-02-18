@@ -91,5 +91,5 @@ jobs:
       run: |
         git tag -d ${{ env.VERION_TAG }}
         git push origin :${{ env.VERION_TAG }}
-        git tag ${{ env.VERION_TAG }} ${{ env.GITHUB_SHA }}
+        git tag ${{ env.VERION_TAG }}
         git push origin ${{ env.VERION_TAG }}
