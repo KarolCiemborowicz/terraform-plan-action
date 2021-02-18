@@ -70,6 +70,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: ${{ env.TERRAFORM_WORKING_DIRECTORY }}
           report-title: Single Argument Run Second Job
+          save-directory: ./artifacts
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: terraform-output
+          path: ./artifacts/*
 
   release:
     runs-on: ubuntu-latest

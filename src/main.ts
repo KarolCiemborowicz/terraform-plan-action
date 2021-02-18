@@ -1,5 +1,8 @@
 import * as core from '@actions/core';
 import { exec, ExecOptions } from '@actions/exec';
+import io from '@actions/io';
+import fs from 'fs';
+import path from 'path';
 import { createStatusCheck } from './github';
 import { TerraformResults } from './terraform-results';
 
@@ -14,6 +17,7 @@ async function run(): Promise<void> {
     const continueOnError: boolean =
       (core.getInput('continue-on-error', { required: false }) || 'false') ===
       'true';
+    const saveDirectory = core.getInput('save-directory');
 
     const stdOut: Buffer[] = [];
     const stdErr: Buffer[] = [];
@@ -59,6 +63,10 @@ async function run(): Promise<void> {
     core.debug(error);
     core.debug(' ------ Standard Error from Plan -----');
 
+    if (saveDirectory !== undefined) {
+      writeFile(saveDirectory, output, error);
+    }
+
     createStatusCheck(
       githubToken,
       reportTitle,
@@ -71,6 +79,16 @@ async function run(): Promise<void> {
   } catch (error) {
     core.setFailed(error.message);
   }
+}
+
+async function writeFile(
+  directory: string,
+  output: string,
+  error: string
+): Promise<void> {
+  io.mkdirP(directory);
+  await fs.promises.writeFile(path.join(directory, 'std.out'), output);
+  await fs.promises.writeFile(path.join(directory, 'std.err'), error);
 }
 
 function writeBufferToString(data: Buffer[]): string {

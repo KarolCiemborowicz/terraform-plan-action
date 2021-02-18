@@ -23,6 +23,10 @@ inputs:
     required: false
     description: 'The name of the terraform plan to use when posting the results to the Pull Request'
     default: 'Terraform Plan Report'
+  save-directory: 
+    required: false
+    description: 'The directory path to store the full stdout / stderr from the terraform plan execution.  A std.out and std.err file will be created with the data.'
+    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'

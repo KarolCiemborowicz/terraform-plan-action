@@ -28,6 +28,10 @@ export async function createStatusCheck(
 \`\`\``;
   }
 
+  if (details.length > 65000) {
+    details = `${details.substr(0, 65400)} ... truncated`;
+  }
+
   const context = github.context;
   const pr = context.payload.pull_request;
   await octokit.checks.create({
@@ -47,14 +51,24 @@ export async function createStatusCheck(
 }
 
 function getPlanSummary(output: string): string {
-  const planLineStart = output.indexOf('Plan:');
-  if (planLineStart > 0) {
-    const endOfPlanLine = output.indexOf('\n', planLineStart);
-    if (endOfPlanLine > 0) {
-      return output.substr(planLineStart, endOfPlanLine - planLineStart);
+  let summary = findLine('Plan:', output);
+  if (summary === '') {
+    summary = findLine('No changes.', output);
+  }
+
+  return summary;
+}
+
+function findLine(wording: string, output: string): string {
+  const wordingIndex = output.indexOf(wording);
+  if (wordingIndex > 0) {
+    const endOfLineIndex = output.indexOf('\n', wordingIndex);
+    if (endOfLineIndex > 0) {
+      return output.substring(wordingIndex, endOfLineIndex);
     } else {
-      return output.substr(planLineStart);
+      return output.substr(wordingIndex);
     }
   }
+
   return '';
 }

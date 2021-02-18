@@ -58,6 +58,9 @@ function createStatusCheck(accessToken, title, results) {
     ${results.error}
 \`\`\``;
         }
+        if (details.length > 65000) {
+            details = `${details.substr(0, 65400)} ... truncated`;
+        }
         const context = github.context;
         const pr = context.payload.pull_request;
         yield octokit.checks.create({
@@ -78,14 +81,21 @@ function createStatusCheck(accessToken, title, results) {
 }
 exports.createStatusCheck = createStatusCheck;
 function getPlanSummary(output) {
-    const planLineStart = output.indexOf('Plan:');
-    if (planLineStart > 0) {
-        const endOfPlanLine = output.indexOf('\n', planLineStart);
-        if (endOfPlanLine > 0) {
-            return output.substr(planLineStart, endOfPlanLine - planLineStart);
+    let summary = findLine('Plan:', output);
+    if (summary === '') {
+        summary = findLine('No changes.', output);
+    }
+    return summary;
+}
+function findLine(wording, output) {
+    const wordingIndex = output.indexOf(wording);
+    if (wordingIndex > 0) {
+        const endOfLineIndex = output.indexOf('\n', wordingIndex);
+        if (endOfLineIndex > 0) {
+            return output.substring(wordingIndex, endOfLineIndex);
         }
         else {
-            return output.substr(planLineStart);
+            return output.substr(wordingIndex);
         }
     }
     return '';
@@ -127,9 +137,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const exec_1 = __nccwpck_require__(1514);
+const io_1 = __importDefault(__nccwpck_require__(7436));
+const fs_1 = __importDefault(__nccwpck_require__(5747));
+const path_1 = __importDefault(__nccwpck_require__(5622));
 const github_1 = __nccwpck_require__(5928);
 const terraform_results_1 = __nccwpck_require__(6374);
 function run() {
@@ -142,6 +158,7 @@ function run() {
             const debug = (core.getInput('debug', { required: false }) || 'false') === 'true';
             const continueOnError = (core.getInput('continue-on-error', { required: false }) || 'false') ===
                 'true';
+            const saveDirectory = core.getInput('save-directory');
             const stdOut = [];
             const stdErr = [];
             const options = {};
@@ -177,6 +194,9 @@ function run() {
             core.debug(' ------ Standard Error from Plan -----');
             core.debug(error);
             core.debug(' ------ Standard Error from Plan -----');
+            if (saveDirectory !== undefined) {
+                writeFile(saveDirectory, output, error);
+            }
             github_1.createStatusCheck(githubToken, reportTitle, new terraform_results_1.TerraformResults(output, error, exitCode));
             if (continueOnError === false && exitCode !== 0) {
                 core.setFailed(`Terraform exited with code ${exitCode}.`);
@@ -185,6 +205,13 @@ function run() {
         catch (error) {
             core.setFailed(error.message);
         }
+    });
+}
+function writeFile(directory, output, error) {
+    return __awaiter(this, void 0, void 0, function* () {
+        io_1.default.mkdirP(directory);
+        yield fs_1.default.promises.writeFile(path_1.default.join(directory, 'std.out'), output);
+        yield fs_1.default.promises.writeFile(path_1.default.join(directory, 'std.err'), error);
     });
 }
 function writeBufferToString(data) {
