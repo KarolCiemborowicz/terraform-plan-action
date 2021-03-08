@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.7...v1.1.8) (2021-03-08)
+
+
+### Bug Fixes
+
+* fix save plan to file code. ([#31](https://github.com/HylandSoftware/terraform-plan-action/issues/31)) ([bea4818](https://github.com/HylandSoftware/terraform-plan-action/commit/bea48184c8958acb3f2596ecb289ce521ff11c10))
+
 ## [1.1.7](https://github.com/HylandSoftware/terraform-plan-action/compare/v1.1.6...v1.1.7) (2021-02-18)
 
 
