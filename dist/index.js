@@ -194,7 +194,7 @@ function run() {
             core.debug(' ------ Standard Error from Plan -----');
             core.debug(error);
             core.debug(' ------ Standard Error from Plan -----');
-            if (saveDirectory !== undefined) {
+            if (saveDirectory !== undefined && saveDirectory.length > 0) {
                 writeFile(saveDirectory, output, error);
             }
             github_1.createStatusCheck(githubToken, reportTitle, new terraform_results_1.TerraformResults(output, error, exitCode));
@@ -209,7 +209,7 @@ function run() {
 }
 function writeFile(directory, output, error) {
     return __awaiter(this, void 0, void 0, function* () {
-        io_1.default.mkdirP(directory);
+        yield io_1.default.mkdirP(directory);
         yield fs_1.default.promises.writeFile(path_1.default.join(directory, 'std.out'), output);
         yield fs_1.default.promises.writeFile(path_1.default.join(directory, 'std.err'), error);
     });

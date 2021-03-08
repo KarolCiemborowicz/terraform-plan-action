@@ -17,7 +17,7 @@ async function run(): Promise<void> {
     const continueOnError: boolean =
       (core.getInput('continue-on-error', { required: false }) || 'false') ===
       'true';
-    const saveDirectory = core.getInput('save-directory');
+    const saveDirectory: string = core.getInput('save-directory');
 
     const stdOut: Buffer[] = [];
     const stdErr: Buffer[] = [];
@@ -63,7 +63,7 @@ async function run(): Promise<void> {
     core.debug(error);
     core.debug(' ------ Standard Error from Plan -----');
 
-    if (saveDirectory !== undefined) {
+    if (saveDirectory !== undefined && saveDirectory.length > 0) {
       writeFile(saveDirectory, output, error);
     }
 
@@ -86,7 +86,7 @@ async function writeFile(
   output: string,
   error: string
 ): Promise<void> {
-  io.mkdirP(directory);
+  await io.mkdirP(directory);
   await fs.promises.writeFile(path.join(directory, 'std.out'), output);
   await fs.promises.writeFile(path.join(directory, 'std.err'), error);
 }
