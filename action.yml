@@ -17,7 +17,7 @@ inputs:
     default: false
   continue-on-error:
     required: false
-    description: 'Whether or not the action should set the failure status if the plan fails.  This will not affect the check being set witht he plan results.'
+    description: 'Whether or not the action should set the failure status if the plan fails.  This will not affect the check being set with the plan results.'
     default: false
   report-title:
     required: false
@@ -28,5 +28,5 @@ inputs:
     description: 'The directory path to store the full stdout / stderr from the terraform plan execution.  A std.out and std.err file will be created with the data.'
     default: ''
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
